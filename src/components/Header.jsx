@@ -1,130 +1,64 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 
 const Header = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.classList.add("overflow-hidden-while-loading");
-    } else if (!isMobileMenuOpen) {
-      document.body.classList.remove("overflow-hidden-while-loading");
-    }
-  }, [isMobileMenuOpen]);
-  const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
-  };
-  return (
-    <nav className="bg-gray-400">
-      <div className="container xl:max-w-[1100px] py-[26px] lg:py-[36px] px-4 sm:px-8 xl:px-0 mx-auto flex items-center justify-between">
-        <a href="/">
-          <h2 className="font-black text-2xl">Food Ninja</h2>
-        </a>
-        <div className="hidden md:flex items-center">
-          <a
-            href="#blog-post"
-            className="text-lg transition-all duration-300 ease-in-out hover:opacity-30"
-            onClick={closeMobileMenu}
-          >
-            Blog
-          </a>
-          <a
-            href="#about"
-            className="text-lg text-gray transition-all duration-300 ease-in-out hover:opacity-30 px-5"
-          >
-            About
-          </a>
-          <a
-            href="#contact"
-            className="text-lg text-gray transition-all duration-300 ease-in-out hover:opacity-30"
-          >
-            Contact
-          </a>
-          <a
-            href="#contact"
-            className="text-lg text-white rounded-[29px] bg-blue-500 pt-[3px] pb-[6px] px-4 ml-5 transition-all duration-300 ease-in-out hover:opacity-30"
-          >
-            Log in
-          </a>
-        </div>
-        <div className="md:hidden custom_index">
-          <button
-            onClick={toggleMobileMenu}
-            className="text-black focus:outline-none"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="black"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              {isMobileMenuOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16m-7 6h7"
-                />
-              )}
-            </svg>
-          </button>
-        </div>
-      </div>
 
-      {/* Mobile Menu Overlay */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden fixed top-0 left-0 w-full h-full bg-gray-400 z-50 flex justify-center items-center transition-all duration-300">
-          <div className="text-black py-4 flex justify-center items-center navbar_custom_height">
-            <ul className="flex flex-col items-center animate-fadeIn">
-              <li>
-                <a
-                  href="#blog-post"
-                  className="text-lg text-gray transition-all duration-300 ease-in-out hover:opacity-30"
-                  onClick={closeMobileMenu}
-                >
-                  Blog
-                </a>
-              </li>
-              <li className="pt-3">
-                <a
-                  href="#about"
-                  className="text-lg text-gray transition-all duration-300 ease-in-out hover:opacity-30"
-                  onClick={closeMobileMenu}
-                >
-                  About
-                </a>
-              </li>
-              <li className="pt-3">
-                <a
-                  href="#contact"
-                  className="text-lg text-gray transition-all duration-300 ease-in-out hover:opacity-30"
-                  onClick={closeMobileMenu}
-                >
-                  Contact
-                </a>
-              </li>
-              <a
-                href="#contact"
-                className="text-lg text-white rounded-[29px] bg-blue-500 pt-[3px] pb-[6px] px-4 mt-3 transition-all duration-300 ease-in-out"
-                onClick={closeMobileMenu}
-              >
-                Log in
-              </a>
-            </ul>
+  const HEADER_LIST = [
+    {
+      title: "Home",
+      link: "#",
+    },
+    {
+      title: "About",
+      link: "#about",
+    },
+    {
+      title: "Roadmap",
+      link: "#roadmap",
+    },
+    {
+      title: "Contact",
+      link: "#contact",
+    },
+  ]
+  const [nav, setNav] = useState()
+
+  useEffect(() => {
+    const handlerClick = () => {
+      if (nav && window.innerWidth < 768) {
+        document.body.classList.add("overflow-hidden")
+      }
+      else {
+        document.body.classList.remove("overflow-hidden")
+      }
+    }
+    handlerClick()
+  }, [])
+
+  return (
+    <>
+      <div className='flex justify-between items-center p-5 md:p-10 bg-pink-300'>
+        <div>
+          <a href="#" className='text-3xl font-bold'>Logo</a>
+        </div>
+        <div className={`${nav ? "translate-x-0" : "max-[767.98px]:translate-x-full"} max-[767.98px]:flex gap-5 justify-center items-center flex-col fixed md:relative z-[15] max-[767.98px]:w-full h-full top-0 left-0 bg-black md:bg-transparent transition-all ease-in-out duration-500`}>
+          <div className='grid md:flex text-center gap-5'>
+            {HEADER_LIST.map((obj, index) => (
+              <a onClick={() => setNav(!nav)} key={index} href={obj.link} className='mx-4 text-xl font-bold text-white hover:text-green-500 md:hover:text-black transition-all duration-500 ease-in-out'>{obj.title}</a>
+            ))}
+          </div>
+          <div className='md:hidden'>
+            <button onClick={() => setNav(!nav)} className='text-xl font-bold text-white bg-green-800 border-[3px] border-black rounded px-3 py-2 hover:bg-white hover:text-green-800 hover:border-green-600 transition-all duration-500 ease-in-out'>Learn More</button>
           </div>
         </div>
-      )}
-    </nav>
-  );
-};
+        <div className='hidden md:block'>
+          <button className='text-xl font-bold text-white bg-green-800 border-[3px] border-black rounded px-3 py-2 hover:bg-white hover:text-green-800 hover:border-green-600 transition-all duration-500 ease-in-out'>Learn More</button>
+        </div>
+        <div className='relative z-[15] md:hidden' onClick={() => setNav(!nav)}>
+          <p className='text-white'>{nav ? "cross" : "toggle"}</p>
+        </div>
+      </div>
+    </>
+  )
+}
 
-export default Header;
+export default Header

@@ -14,8 +14,7 @@ const CustomAccordion = () => {
     },
     {
       question: "Question 3",
-      answer:
-        "Lorem ipsum dolor sit amet consectetur.",
+      answer: "Lorem ipsum dolor sit amet consectetur.",
     },
     {
       question: "Question 4",
@@ -36,7 +35,14 @@ const CustomAccordion = () => {
         Custom Accordion Tailwind
       </h1>
       {faqs.map((faq, index) => (
-        <div key={index}>
+        <div
+          key={index}
+          className={`overflow-hidden transition-all duration-300 ${
+            activeIndex === index
+              ? " border border-red-500 shadow_border"
+              : " border border-black"
+          } mt-3`}
+        >
           <button
             onClick={() => toggleAccordion(index)}
             className="w-full text-left p-4 focus:outline-none hover:bg-gray-100 transition duration-300 ease-in-out"
@@ -63,7 +69,7 @@ const CustomAccordion = () => {
           </button>
           <div
             className={`overflow-hidden transition-all duration-300 ${
-              activeIndex === index ? "max-h-[130px]" : "max-h-0"
+              activeIndex === index ? "h-auto" : "max-h-0"
             }`}
           >
             <div className="text-gray-700 p-4">
